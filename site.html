@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy One Year, My Love!</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Abril+Fatface&family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<style>
+:root {
+  --primary: #ff6b81;
+  --secondary: #ff8e9e;
+  --dark: #1a1a2e;
+  --light: #fef6fb;
+  --accent: #ffd166;
+  --text: #333;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Montserrat', 'sans-serif';
+  color: var(--text);
+  background: var(--dark);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Background with gradient overlay */
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  overflow: hidden;
+}
+
+video#bgVideo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(255, 107, 129, 0.3) 100%);
+  z-index: -1;
+}
+
+/* Floating hearts decoration */
+.floating-hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff6b81"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+  background-size: contain;
+  opacity: 0;
+  animation: float-up 15s linear infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(100vh) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-20vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Lock screen styling */
+#lockScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--dark) 0%, #4a1e3a 100%);
+  color: var(--light);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#lockScreen h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#lockScreen p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 500px;
+}
+
+#lockScreen input {
+  padding: 15px 20px;
+  font-size: 1rem;
+  border: 2px solid var(--primary);
+  border-radius: 50px;
+  margin-bottom: 20px;
+  width: 280px;
+  max-width: 80%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#lockScreen input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+}
+
+#lockScreen input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#lockScreen button {
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+#lockScreen button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(255, 107, 129, 0.3);
+}
+
+#lockScreen button:active {
+  transform: translateY(1px);
+}
+
+#errorMessage {
+  color: var(--accent);
+  margin-top: 15px;
+  min-height: 20px;
+}
+
+/* Main content styling */
+#mainContent {
+  display: none; /* Hidden initially */
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#mainContent.show {
+  opacity: 1;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 30px 20px;
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+header img {
+  height: 50px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+header h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.8rem;
+  color: var(--light);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Note section */
+.note {
+  max-width: 800px;
+  margin: 50px auto;
+  background: rgba(26, 26, 46, 0.8);
+  color: var(--light);
+  padding: 40px;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.note::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 107, 129, 0.1) 0%, transparent 70%);
+  animation: rotate 60s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.note br {
+  margin-bottom: 15px;
+  display: block;
+  content: "";
+}
+
+/* Gallery section */
+.gallery-container {
+  position: relative;
+  padding: 60px 20px;
+  background: linear-gradient(180deg, rgba(26, 26, 46, 0.7) 0%, rgba(74, 30, 58, 0.7) 100%);
+  margin: 50px 0;
+}
+
+.gallery-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(180deg, rgba(255, 107, 129, 0.5), transparent);
+}
+
+.gallery-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(0deg, rgba(255, 107, 129, 0.5), transparent);
+}
+
+.gallery-title {
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  color: var(--light);
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gallery-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  justify-content: center;
+  align-items: start;
+  /* Add this line: */
+  place-items: center;
+}
+
+.photo-wrapper {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  /* aspect-ratio: 1/1; */
+}
+
+.photo-wrapper:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(255, 107, 129, 0.4);
+}
+
+.photo-wrapper img {
+  width: 100%;
+  height: auto; /* Let image keep aspect ratio */
+  display: block;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.photo-wrapper:hover img {
+  transform: scale(1.1);
+}
+
+.heart-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 107, 129, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.photo-wrapper:hover .heart-overlay {
+  opacity: 1;
+}
+
+.heart-overlay::before {
+  content: "❤";
+  font-size: 4rem;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Countdown section */
+.countdowns {
+  text-align: center;
+  margin: 80px auto;
+  max-width: 800px;
+  background: rgba(26, 26, 46, 0.8);
+  color: var(--light);
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.countdowns::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23ff6b81" opacity="0.1" d="M30,50 Q50,30 70,50 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 T90,50"></path></svg>');
+  background-size: 100px 100px;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.countdowns h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--light);
+  position: relative;
+  display: inline-block;
+}
+
+.countdowns h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.countdown-item {
+  margin: 30px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.countdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+.countdown-item strong {
+  display: block;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: var(--primary);
+}
+
+.countdown-item span {
+  font-size: 1.1rem;
+  font-family: 'Montserrat', monospace;
+  color: var(--accent);
+}
+
+/* Footer styling */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(180deg, transparent, rgba(26, 26, 46, 0.8));
+  position: relative;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+footer span {
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2rem;
+  }
+  
+  .note {
+    padding: 25px;
+    font-size: 1rem;
+  }
+  
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+  
+  .countdowns {
+    padding: 25px;
+  }
+  
+  .countdown-item span {
+    font-size: 0.9rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+</style>
+</head>
+<body>
+
+
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<audio autoplay loop id="bgMusic">
+  <source src="Haareya Meri Pyaari Bindu 320 Kbps.mp3" type="audio/mp3">
+</audio>
+
+<div id="lockScreen">
+  <h2 class="animate__animated animate__pulse animate__infinite">Before You Enter...</h2>
+  <p>State your full legal name. <br>(I can see you frowning haha)</p>
+  <input id="answerInput" type="text" placeholder="Type your answer..." autocomplete="off" />
+  <button onclick="checkAnswer()">sit on me 🥰</button>
+  <p id="errorMessage"></p>
+</div>
+
+<div id="mainContent">
+  <header>
+    
+    <h1>Happy one year, babe!</h1>
+  </header>
+
+  <section class="note animate__animated animate__fadeIn">
+  i cant express it in words, how grateful i am of the day i proposed which led to this.<br><br>
+  Its been an year of us together, i know you better, your habits, your icks, the way you roll your eyes or the way you pop your tongue out a little, even the fact that your eyebrows are fake 😲.<br><br>
+  I can say with the utmost conviction that i love every bit of you, all the things that make you beautiful and the things that make you human, each memory you've shared, each trauma we've bonded over is forever a part of me now.<br><br>
+  We've talked everyday, kissed everyday, fought every three days (haha) and I've loved you more and more each passing second of this year.<br><br>
+  I wouldn't wanna do this with anyone else, love.<br><br>
+  To the years to come!<br>
+  I LOVE YOU WITH ALL MY HEART 🫶<br><br>
+  (Calling you mine has been the greatest pleasure ever babe)
+</section>
+
+
+  <div class="gallery-container">
+    <h2 class="gallery-title">I love you babe!</h2>
+    <section class="gallery">
+      <div class="photo-wrapper" onclick="openImage('IMG_7616.JPG')">
+        <img src="IMG_7616.JPG" alt="Our moment">
+        <div class="heart-overlay"></div>
+      </div>
+      <div class="photo-wrapper" onclick="openImage('IMG_7617.JPG')">
+        <img src="IMG_7617.JPG" alt="Our moment">
+        <div class="heart-overlay"></div>
+      </div>
+      <div class="photo-wrapper" onclick="openImage('IMG_7618.JPG')">
+        <img src="IMG_7618.JPG" alt="Our moment">
+        <div class="heart-overlay"></div>
+      </div>
+      <div class="photo-wrapper" onclick="openImage('IMG_7619.JPG')">
+        <img src="IMG_7619.JPG" alt="Our moment">
+        <div class="heart-overlay"></div>
+      </div>
+      <div class="photo-wrapper" onclick="openImage('IMG_7620.JPG')">
+        <img src="IMG_7620.JPG" alt="Our moment">
+        <div class="heart-overlay"></div>
+      </div>
+      <div class="photo-wrapper" onclick="openImage('IMG_7621.JPG')">
+        <img src="IMG_7621.JPG" alt="Our moment">
+        <div class="heart-overlay"></div>
+        <div class="photo-wrapper" onclick="openImage('IMG_7621.JPG')">
+      </div>
+      <div style="width:100%; margin:50px 0;">
+  <video autoplay muted loop style="width:100%; display:block; border-radius:10px;">
+    <source src="WhatsApp Video 2025-07-12 at 21.15.36_80a29ca0.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+    </section>
+  </div>
+
+  <section class="countdowns animate__animated animate__fadeIn">
+    <h2>Our Timelines</h2>
+    <div class="countdown-item">
+      <strong>Since we met (June 6, 2024):</strong>
+      <span id="countMet"></span>
+    </div>
+    <div class="countdown-item">
+      <strong>Since Our First "I Love You" (July 8, 2024):</strong>
+      <span id="countLove"></span>
+    </div>
+    <div class="countdown-item">
+      <strong>Since we've been together (July 13, 2024):</strong>
+      <span id="countDate"></span>
+    </div>
+  </section>
+
+  <footer>
+    hehe 💖
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script>
+// Create floating hearts
+function createHearts() {
+  const container = document.getElementById('floatingHearts');
+  const heartCount = 15;
+  
+  for (let i = 0; i < heartCount; i++) {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    
+    // Random properties
+    const size = Math.random() * 20 + 10;
+    const posX = Math.random() * 100;
+    const delay = Math.random() * 15;
+    const duration = Math.random() * 10 + 10;
+    
+    heart.style.width = `${size}px`;
+    heart.style.height = `${size}px`;
+    heart.style.left = `${posX}%`;
+    heart.style.animationDelay = `${delay}s`;
+    heart.style.animationDuration = `${duration}s`;
+    
+    container.appendChild(heart);
+  }
+}
+
+// Check password
+function checkAnswer() {
+  const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+  const correctAnswer = "parul priyadarshini deo";
+  
+  if (userAnswer === correctAnswer) {
+    // Grand celebration!
+    document.getElementById("lockScreen").classList.add("animate__fadeOut");
+    
+    setTimeout(() => {
+      document.getElementById("lockScreen").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("mainContent").classList.add("show");
+      }, 100);
+    }, 500);
+    
+    // Fireworks celebration
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    
+    const interval = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+      
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+      
+      const particleCount = 50 * (timeLeft / duration);
+      
+      // Heart-shaped confetti
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        shapes: ['heart'],
+        colors: ['#ff6b81', '#ff8e9e', '#ffd166', '#ffffff']
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+        shapes: ['heart'],
+        colors: ['#ff6b81', '#ff8e9e', '#ffd166', '#ffffff']
+      });
+    }, 250);
+    
+    // Play music
+    document.getElementById('bgMusic').play();
+    
+  } else {
+    document.getElementById("errorMessage").innerText = "Uh-Oh!";
+    document.getElementById("answerInput").classList.add("shake");
+    setTimeout(() => {
+      document.getElementById("answerInput").classList.remove("shake");
+    }, 500);
+  }
+}
+
+// Countdown calculations
+function updateCountdown(id, eventDate) {
+  const now = new Date().getTime();
+  const distance = now - eventDate;
+  
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+  document.getElementById(id).innerHTML = `
+    <span class="countdown-number">${days}</span> days 
+    <span class="countdown-number">${hours}</span> hours 
+    <span class="countdown-number">${minutes}</span> minutes 
+    <span class="countdown-number">${seconds}</span> seconds
+  `;
+}
+
+// Open image in lightbox
+function openImage(src) {
+  // Create lightbox overlay
+  const lightbox = document.createElement('div');
+  lightbox.style.position = 'fixed';
+  lightbox.style.top = '0';
+  lightbox.style.left = '0';
+  lightbox.style.width = '100%';
+  lightbox.style.height = '100%';
+  lightbox.style.backgroundColor = 'rgba(0,0,0,0.9)';
+  lightbox.style.display = 'flex';
+  lightbox.style.justifyContent = 'center';
+  lightbox.style.alignItems = 'center';
+  lightbox.style.zIndex = '1000';
+  lightbox.style.cursor = 'pointer';
+  
+  // Create image element
+  const img = document.createElement('img');
+  img.src = src;
+  img.style.maxWidth = '90%';
+  img.style.maxHeight = '90%';
+  img.style.objectFit = 'contain';
+  img.style.borderRadius = '10px';
+  img.style.boxShadow = '0 0 30px rgba(255,107,129,0.5)';
+  
+  // Add to DOM
+  lightbox.appendChild(img);
+  document.body.appendChild(lightbox);
+  
+  // Close on click
+  lightbox.addEventListener('click', () => {
+    document.body.removeChild(lightbox);
+  });
+  
+  // Close on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.body.removeChild(lightbox);
+    }
+  });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  createHearts();
+  
+  // Update countdowns every second
+  setInterval(() => {
+    updateCountdown("countMet", new Date("June 6, 2024 00:00:00").getTime());
+    updateCountdown("countLove", new Date("July 8, 2024 00:00:00").getTime());
+    updateCountdown("countDate", new Date("July 13, 2024 00:00:00").getTime());
+  }, 1000);
+  
+  // Allow pressing Enter to submit
+  document.getElementById("answerInput").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      checkAnswer();
+    }
+  });
+});
+
+// Add shake animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+  }
+  .shake {
+    animation: shake 0.5s ease-in-out;
+    border-color: #ffd166 !important;
+  }
+  .countdown-number {
+    color: #ffd166;
+    font-weight: bold;
+  }
+`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
