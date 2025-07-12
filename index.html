@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Library Management System</h1>
+    <nav>
+      <ul>
+        <li><a href="#search">Search</a></li>
+        <li><a href="#borrow">Borrow</a></li>
+        <li><a href="#return">Return</a></li>
+        <li><a href="#login">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="search">
+    <h2>Search Catalog</h2>
+    <input type="text" placeholder="Search by Title, Author, ISBN">
+    <button>Search</button>
+  </section>
+
+  <section id="borrow">
+    <h2>Borrow Book</h2>
+    <form>
+      <input type="text" placeholder="Student ID">
+      <input type="text" placeholder="Book Barcode">
+      <button type="submit">Borrow</button>
+    </form>
+  </section>
+
+  <section id="return">
+    <h2>Return Book</h2>
+    <form>
+      <input type="text" placeholder="Book Barcode">
+      <button type="submit">Return</button>
+    </form>
+  </section>
+
+  <section id="login">
+    <h2>User Login</h2>
+    <form>
+      <input type="text" placeholder="Username">
+      <input type="password" placeholder="Password">
+      <button type="submit">Login</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 University Library</p>
+  </footer>
+</body>
+</html>
